@@ -107,9 +107,8 @@ function gatherStrings(obj, out = []) {
 
 function binarySearch(arr, val) {
   // base case array.length = 0 1
-  debugger;
-  if (arr.length === 2) {
-    if (arr[0] === val || arr[1] === val) {
+  if (arr.length === 1) {
+    if (arr[0] === val) {
       return true;
     }
     else {
@@ -135,15 +134,37 @@ function binarySearch(arr, val) {
     return binarySearch(arr.slice(middle + 1), val);
   }
 
-
 }
 
 
-/** binarySearch: given a sorted array of numbers, and a value,
+/** binarySearchIndex: given a sorted array of numbers, and a value,
  * return the index of that value (or -1 if val is not present). */
 
-function binarySearchIndex(arr, val) {
+function binarySearchIndex(arr, val, i = 0) {
+  if (arr.length === 0) return -1;
 
+  let left = 0;
+  let right = arr.length - 1;
+
+  if (arr.length === 1) {
+    if (arr[0] === val) {
+      return 0 + i;
+    }
+    else {
+      return -1;
+    }
+  }
+
+  let middle = Math.floor((left + right) / 2);
+  if (arr[middle] === val) return middle + i;
+
+  if (arr[middle] > val) {
+    return binarySearchIndex(arr.slice(0, middle), val, i);
+  }
+  if (arr[middle] < val) {
+    i = i + Math.ceil(arr.length / 2);
+    return binarySearchIndex(arr.slice(middle + 1), val, i);
+  }
 }
 
 // you might find the above two problems easier if you change the function signature to:
@@ -166,35 +187,4 @@ module.exports = {
   binarySearchIndex,
 };
 
-
-// //
-// function binarySearch(sorted, sought) {
-//   /*
-
-//   Begin with the mid element of the whole array as a search key.
-//  If the value of the search key is equal to the item then return an index of the search key.
-//  Or if the value of the search key is less than the item in the middle of the interval,
-//   narrow the interval to the lower half.
-//  Otherwise, narrow it to the upper half.
-//  Repeatedly check from the second point until the value is found or the interval is empty.*/
-
-//   let left = 0;
-
-//   let right = sorted.length - 1;
-
-//   while (left <= right) {
-//     // middle index of sorted
-//     let middle = Math.floor((left + right) / 2);
-
-//     // if middle value < sought then all lower indexes are discarded
-//     // by setting the left most index to middle + 1
-//     if (sorted[middle] < sought) left = middle + 1;
-//     // if middle value is greater than sought, than everything after middle
-//     // can be discarded
-//     else if (sorted[middle] > sought) right = middle - 1;
-//     // If it aint greater than or lower than we have a winner
-//     else return middle;
-//   }
-//   return -1;
-// }
 
